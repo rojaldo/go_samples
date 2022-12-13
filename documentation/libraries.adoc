@@ -1,0 +1,131 @@
+= Useful libreries in Go
+
+== Index
+* https://github.com/urfave/cli[cli]
+* https://github.com/tidwall/gjson[gjson]
+* https://github.com/go-resty/resty[resty]
+* https://github.com/pkg/errors[errors]
+* https://github.com/gin-gonic/gin[gin]
+* https://github.com/go-gorm/gorm[gorm]
+* https://github.com/go-redis/redis[go-redis]
+* https://github.com/go-kit/kit[go kit]
+* https://github.com/shopspring/decimal[decimal]
+* https://github.com/satori/go.uuid[go.uuid]
+* https://github.com/sirupsen/logrus[logrus]
+* https://github.com/golang/mock[mock]
+* https://github.com/stretchr/testify[testify]
+
+== Cli
+
+cli is a simple, fast, and fun package for building command line apps in Go.
+
+The usage is simple:
+
+[source,go]
+----
+package main
+
+import (
+    "fmt"
+    "os"
+
+    "github.com/urfave/cli"
+)
+
+func main() {
+    app := cli.NewApp()
+    app.Name = "greet"
+    app.Usage = "fight the loneliness!"
+    app.Action = func(c *cli.Context) error {
+        fmt.Println("Hello friend!")
+        return nil
+    }
+
+    app.Run(os.Args)
+}
+----
+
+.Parameters for the app:
+* Name: The name of the app
+* Usage: A short description of what the app does
+* Action: The function to call when the app is run
+* Flags: A list of flags to parse
+* Commands: A list of commands to run
+* Version: The version of the app
+* Authors: A list of authors of the app
+* HelpName: The name of the help command
+* UsageText: The text to display in the help output
+* HideHelp: A boolean to hide the help command
+* HideVersion: A boolean to hide the version flag
+
+== Gjson
+
+gjson is a fast and simple way to get values from a JSON document. It supports JSONPath syntax.
+
+[source,go]
+----
+package main
+
+import (
+    "fmt"
+
+    "github.com/tidwall/gjson"
+)
+
+func main() {
+    json := `{"name":{"first":"Janet","last":"Prichard"},"age":47}`
+    value := gjson.Get(json, "name.last")
+    fmt.Println(value.String())
+}
+
+----
+
+.Methods:
+* Get: Get the value of a path
+* GetMany: Get the values of many paths
+* Set: Set the value of a path
+* Exists: Check if a path exists
+* Delete: Delete a path
+* Type: Get the type of a path
+* String: Get the string value of a path
+* Int: Get the int value of a path
+* Float: Get the float value of a path
+* Bool: Get the bool value of a path
+* Array: Get the array value of a path
+* Map: Get the map value of a path
+* Value: Get the value of a path
+* Raw: Get the raw value of a path
+* Search: Search for a path
+* Iter: Iterate over all paths
+
+== Resty
+
+resty is a HTTP client library for Go, which is inspired by Ruby's rest-client.
+
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "github.com/go-resty/resty/v2"
+)
+
+func main() {
+    client := resty.New()
+
+    resp, err := client.R().
+        SetHeader("Accept", "application/json").
+        Get("https://httpbin.org/get")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(resp)
+
+}
+
+----

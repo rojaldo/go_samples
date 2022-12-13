@@ -1,0 +1,94 @@
+= Go Exercises 
+
+== Basic Exercises
+
+=== Exercise 1
+
+Write a program that determines if a year is a leap year.
+
+=== Exercise 2
+
+Write a program that prints the numbers from 1 to 100. But for multiples of three print "Fizz" instead of the number and for the multiples of five print "Buzz". For numbers which are multiples of both three and five print "FizzBuzz".
+
+=== Exercise 3
+
+Write a program that gets the longest word from a sentence.
+
+=== Exercise 4
+
+Write a program that checks if a string is a palindrome.
+
+=== Exercise 5
+
+Write a program that counts the numbers of vowels and consonants in a sentence.
+
+=== Exercise 6
+
+Write a program that counts the number of times a word appears in a sentence.
+
+=== Exercise 7
+
+Write a program that checks if parentheses, square brackets and curly brackets are balanced.
+
+=== Exercise 8
+
+Write a program that prints the first 100 Fibonacci numbers. Use concurrency to speed up the calculation.
+
+=== Exercise 9
+
+Write a program that prints the first 100 prime numbers. Use concurrency to speed up the calculation.
+
+=== Exercise 10
+
+Write a program that gets the nth biggest number in an array.
+
+=== Exercise 11
+
+Write a program that gets the biggest sum of two consecutive numbers in an array.
+
+=== Exercise 12
+
+Write a function that checks if two arrays have at least one element in common.
+
+== Object Oriented Exercises
+
+=== Exercise 1
+
+Write a program that represents a bank account. The program should be able to deposit and withdraw money. The program should also be able to print the balance.
+
+=== Exercise 2
+
+Write a struct that represents a Tetris piece. The struct should have a type, a color and the shape of the piece. The shape should be a 5x5 matrix of booleans. The program should be able to rotate the piece.
+
+=== Exercise 3
+
+Write a program that represents a deck of cards. The program should be able to shuffle the deck and deal cards.
+
+=== Exercise 4
+
+== Pointers Exercises
+
+=== Exercise 1
+
+Write a program that prints the address and value of a variable.
+
+=== Exercise 2
+
+Write a program that implements a stack. The stack should be able to push and pop elements.
+
+=== Exercise 3
+
+Write a program that implements a double linked list. The list should be able to add and remove elements.
+
+=== Exercise 4
+
+Write a program that implements a binary search tree. The tree should be able to add and remove elements.
+
+=== Exercise 5
+
+Write a program that implements a hash table. The hash table should be able to add and remove elements.
+
+
+
+
+

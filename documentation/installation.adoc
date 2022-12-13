@@ -1,0 +1,41 @@
+= Install Go
+
+== Tools
+
+We will use the following tools:
+
+* go: the Go compiler
+* vscode: the Visual Studio Code editor
+
+=== Install Go on Windows
+
+Go to https://golang.org/dl/ and download the latest version of Go for your platform.
+
+Download de .msi file and run it.
+
+==== Linux
+
+Go to https://golang.org/dl/ and download the latest version of Go for your platform.
+
+Download the .tar.gz file and extract it in your home directory.
+
+Alternatively, use a package manager of your distribution to install the following packages:
+
+* golang
+* golang-doc
+
+==== Mac
+
+Go to https://golang.org/dl/ and download the latest version of Go for your platform.
+
+Download the .pkg file and run it.
+
+=== Install Visual Studio Code
+
+Go to https://code.visualstudio.com/ and download the latest version of Visual Studio Code for your platform.
+
+==== Useful extensions:
+
+* Go: Rich Go language support for Visual Studio Code
+* Go Doc: Go documentation viewer for Visual Studio Code
+* Go Test Explorer: A test explorer for Go tests
