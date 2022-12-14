@@ -129,3 +129,378 @@ func main() {
 }
 
 ----
+
+.An example of a POST request:
+[source,go]
+----
+package main
+
+import (
+    "fmt"
+    "log"
+    "github.com/go-resty/resty/v2"
+)
+
+func main() {
+    client := resty.New()
+
+    resp, err := client.R().
+        SetHeader("Accept", "application/json").
+        SetBody(map[string]string{
+            "name": "John",
+            "age":  "25",
+        }).
+        Post("https://httpbin.org/post")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(resp)
+
+}
+
+----
+
+.An example of a PUT request:
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+    "github.com/go-resty/resty/v2"
+)
+
+func main() {
+    client := resty.New()
+
+    resp, err := client.R().
+        SetHeader("Accept", "application/json").
+        SetBody(map[string]string{
+            "name": "John",
+            "age":  "25",
+        }).
+        Put("https://httpbin.org/put")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(resp)
+
+}
+
+----
+
+.An example of a DELETE request:
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+    "github.com/go-resty/resty/v2"
+)
+
+func main() {
+    client := resty.New()
+
+    resp, err := client.R().
+        SetHeader("Accept", "application/json").
+        Delete("https://httpbin.org/delete")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(resp)
+
+}
+
+----
+
+== Gorm
+
+GORM is the most used ORM library for Golang, aims to be developer friendly. It's well documented, full-featured, and has first-class support for PostgreSQL, MySQL, SQLite, SQL Server and Oracle.
+
+.An example of a SQLite database:
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "gorm.io/driver/sqlite"
+    "gorm.io/gorm"
+)
+
+type User struct {
+    gorm.Model
+    Name string
+    Age  uint
+}
+
+func main() {
+    db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    db.AutoMigrate(&User{})
+
+    db.Create(&User{Name: "Jinzhu", Age: 18})
+    db.Create(&User{Name: "Jinzhu 2", Age: 20})
+
+    var user User
+    db.First(&user, 1) // find product with integer primary key
+    db.First(&user, "name = ?", "Jinzhu 2") // find product with code D42
+
+    fmt.Println(user)
+}
+
+----
+
+
+.Gorm with Postgres
+[source,go]
+----
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "gorm.io/driver/postgres"
+    "gorm.io/gorm"
+)
+
+type User struct {
+    gorm.Model
+    Name string
+    Age  uint
+}
+
+func main() {
+    dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    db.AutoMigrate(&User{})
+
+    db.Create(&User{Name: "Jinzhu", Age: 18})
+    db.Create(&User{Name: "Jinzhu 2", Age: 20})
+
+    var user User
+    db.First(&user, 1) // find product with integer primary key
+    db.First(&user, "name = ?", "Jinzhu 2") // find product with code D42
+
+    fmt.Println(user)
+}
+
+----
+
+=== Main features
+
+* Auto Migrations
+* Associations
+* Transactions
+* Hooks
+* Preload
+* Query
+* Raw SQL
+* Logger
+* Callbacks
+* Eager Loading
+* Soft Delete
+* Composite Primary Key
+* Composite Foreign Key
+
+==== Auto Migrations
+
+Auto Migrations will automatically create/update/delete tables to match your struct definitions.
+
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "gorm.io/driver/sqlite"
+    "gorm.io/gorm"
+)
+
+type User struct {
+    gorm.Model
+    Name string
+    Age  uint
+}
+
+func main() {
+    db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    db.AutoMigrate(&User{})
+}
+
+----
+
+==== Associations
+
+GORM supports all the common associations: has one, has many, belongs to, many to many.
+
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "gorm.io/driver/sqlite"
+    "gorm.io/gorm"
+)
+
+type User struct {
+    gorm.Model
+    Name string
+    Age  uint
+    Pets []Pet
+}
+
+type Pet struct {
+    gorm.Model
+    Name string
+    Age  uint
+    User uint
+}
+
+func main() {
+    db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    db.AutoMigrate(&User{}, &Pet{})
+
+    user := User{
+        Name: "Jinzhu",
+        Age:  18,
+        Pets: []Pet{
+            {Name: "Galeone", Age: 3},
+            {Name: "Naruto", Age: 1},
+        },
+    }
+    db.Create(&user)
+}
+
+----
+
+==== Transactions
+
+Transactions allow you to run multiple operations as a single atomic operation. If any operation fails, all operations will be rolled back.
+
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "gorm.io/driver/sqlite"
+    "gorm.io/gorm"
+)
+
+type User struct {
+    gorm.Model
+    Name string
+    Age  uint
+}
+
+func main() {
+    db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    db.AutoMigrate(&User{})
+
+    tx := db.Begin()
+    if tx.Error != nil {
+        log.Fatal(tx.Error)
+    }
+
+    if err := tx.Create(&User{Name: "Jinzhu", Age: 18}).Error; err != nil {
+        tx.Rollback()
+        log.Fatal(err)
+    }
+
+    if err := tx.Create(&User{Name: "Jinzhu 2", Age: 20}).Error; err != nil {
+        tx.Rollback()
+        log.Fatal(err)
+    }
+
+    tx.Commit()
+}
+
+----
+
+==== Hooks
+
+Hooks allow you to execute code before or after certain events.
+
+[source,go]
+----
+
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "gorm.io/driver/sqlite"
+    "gorm.io/gorm"
+)
+
+type User struct {
+    gorm.Model
+    Name string
+    Age  uint
+}
+
+func main() {
+    db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    db.AutoMigrate(&User{})
+
+    db.Callback().Create().Before("gorm:create").Register("my_create:before", func(db *gorm.DB) {
+        fmt.Println("before create")
+    })
+
+    db.Callback().Create().After("gorm:create").Register("my_create:after", func(db *gorm.DB) {
+        fmt.Println("after create")
+    })
+
+    db.Create(&User{Name: "Jinzhu", Age: 18})
+}
+
+----
+
+

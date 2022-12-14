@@ -1,17 +1,20 @@
 package main
 
-import ("fmt" 
-		"sample/person")
+import "fmt"
 
+const (
+	Summer = "summer"
+	Autumn = "autumn"
+	Winter = "winter"
+	Spring = "spring"
+)
 
+const (
+	Apples  = 0
+	Oranges = 1
+)
 
 func main() {
-	a := person.Person{}
-	a.SetName("John")
-	a.SetAge(20)
-	z := person.Person{}
-	z.SetName("Jane")
-	fmt.Println(a, z)
-	fmt.Println(a)
-
+	// Ideally, this should never be true!
+	fmt.Println(Summer == Apples)
 }
