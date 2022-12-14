@@ -1,33 +1,71 @@
 package main
 
 import (
-	"sample/tetris"
+	"errors"
 )
+
+type Node struct {
+	Val  int
+	Next *Node
+}
+
+type Stack struct {
+	Top *Node
+}
+
+func (s *Stack) Push(node *Node) {
+	if s.Top == nil {
+		s.Top = node
+		return
+	}
+	node.Next = s.Top
+	s.Top = node
+}
+
+func (s *Stack) Pop() (*Node, error) {
+	if s.Top == nil {
+		return nil, errors.New("Stack is empty")
+	}
+	res := s.Top
+	s.Top = s.Top.Next
+	return res, nil
+}
+
+func (s *Stack) PrintStack() {
+	myElem := s.Top
+	for myElem != nil {
+		println(myElem.Val)
+		myElem = myElem.Next
+	}
+}
 
 func main() {
 
-	uShape := [5][5]bool{
-		{false, false, false, false, false},
-		{false, false, true, true, false},
-		{false, false, true, false, false},
-		{false, false, true, true, false},
-		{false, false, false, false, false},
+	stack := Stack{}
+	stack.Push(&Node{Val: 12})
+	stack.Push(&Node{Val: 14})
+	stack.Push(&Node{Val: 16})
+	stack.PrintStack()
+	println("Popping")
+	stack.Pop()
+	// println(res.Val)
+	stack.PrintStack()
+	println("Popping")
+	_, error := stack.Pop()
+	if error != nil {
+		println(error.Error())
 	}
-
-	var piece tetris.TetrisGeneralPiece
-	piece.InitPiece("red", "U", uShape)
-	piece.PrintPiece()
-	piece.Rotate()
-	piece.PrintPiece()
-	var piece2 tetris.LPiece
-	piece2.InitPiece("blue")
-	piece2.PrintPiece()
-	piece2.SmartRotate()
-	piece2.PrintPiece()
-	var piece3 tetris.OPiece
-	piece3.InitPiece("green")
-	piece3.PrintPiece()
-	piece3.SmartRotate()
-	piece3.PrintPiece()
+	stack.PrintStack()
+	println("Popping")
+	_, error = stack.Pop()
+	if error != nil {
+		println(error.Error())
+	}
+	stack.PrintStack()
+	println("Last Popping")
+	_, error = stack.Pop()
+	if error != nil {
+		println(error.Error())
+	}
 
 }
