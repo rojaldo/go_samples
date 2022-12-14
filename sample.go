@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 const (
 	Summer = "summer"
 	Autumn = "autumn"
@@ -13,8 +11,3 @@ const (
 	Apples  = 0
 	Oranges = 1
 )
-
-func main() {
-	// Ideally, this should never be true!
-	fmt.Println(Summer == Apples)
-}

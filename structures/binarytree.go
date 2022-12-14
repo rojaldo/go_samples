@@ -1,4 +1,4 @@
-package main
+package structures
 
 type Node[T any] struct {
 	Val    T
@@ -43,12 +43,4 @@ func (t *Tree) PrintTree() error {
 	println(myElem.Left.Val)
 	println(myElem.Right.Val)
 	return nil
-}
-
-func main() {
-	tree := Tree{}
-	tree.AddNode(&Node[int]{Val: 1}, false)
-	tree.AddNode(&Node[int]{Val: 2}, false)
-	tree.AddNode(&Node[int]{Val: 3}, true)
-	tree.PrintTree()
 }
