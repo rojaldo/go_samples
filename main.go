@@ -30,6 +30,12 @@ func main() {
 			fmt.Println(apod.Hdurl)
 		} else if c.String("trivia") != "" { // trivia parameter is a number
 			fmt.Println("Today's trivia")
+			// question
+			// a. answer
+			// b. answer
+			// c. answer
+			// d. answer
+			// fmt.Scanln(&answer)
 		} else {
 			fmt.Println("Invalid date: ", c.String("date"))
 		}
