@@ -1,19 +1,19 @@
 package tetris
 
-type ZPiece struct {
+type TPiece struct {
 	TetrisPiece
 	rotation  int
 	rotations [4][5][5]bool
 }
 
-func (l *ZPiece) InitPiece(color string) {
+func (l *TPiece) InitPiece(color string) {
 	l.color = color
-	l.pieceType = "Z"
+	l.pieceType = "T"
 	l.shape = [5][5]bool{
 		{false, false, false, false, false},
 		{false, false, false, false, false},
+		{false, false, true, false, false},
 		{false, true, true, false, false},
-		{false, false, true, true, false},
 		{false, false, false, false, false},
 	}
 
@@ -23,7 +23,7 @@ func (l *ZPiece) InitPiece(color string) {
 	l.rotations[3] = getRotation(l.rotations[2])
 }
 
-func (t *ZPiece) SmartRotate() {
+func (t *TPiece) SmartRotate() {
 	t.rotation = (t.rotation + 1) % 4
 	t.shape = t.rotations[t.rotation]
 }

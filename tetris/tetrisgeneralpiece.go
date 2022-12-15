@@ -43,6 +43,97 @@ func (t *TetrisGeneralPiece) InitPiece(color string, pieceType string, shape [5]
 	}
 }
 
+func (t *TetrisGeneralPiece) NewPiece(typePiece int) TetrisGeneralPiece {
+	switch typePiece {
+	case 0:
+		return TetrisGeneralPiece{
+			shape: [5][5]bool{
+				{false, false, false, false, false},
+				{false, false, true, false, false},
+				{false, false, true, false, false},
+				{false, false, true, true, false},
+				{false, false, false, false, false},
+			},
+			color:     "blue",
+			pieceType: "L",
+			rotation:  0}
+	case 1:
+		return TetrisGeneralPiece{
+			shape: [5][5]bool{
+				{false, false, false, false, false},
+				{false, false, true, false, false},
+				{false, false, true, false, false},
+				{false, true, true, false, false},
+				{false, false, false, false, false},
+			},
+			color:     "orange",
+			pieceType: "J",
+			rotation:  0}
+	case 2:
+		return TetrisGeneralPiece{
+			shape: [5][5]bool{
+				{false, false, false, false, false},
+				{false, false, false, false, false},
+				{false, false, true, false, false},
+				{false, true, true, true, false},
+				{false, false, false, false, false},
+			},
+			color:     "red",
+			pieceType: "T",
+			rotation:  0}
+	case 3:
+		return TetrisGeneralPiece{
+			shape: [5][5]bool{
+				{false, false, false, false, false},
+				{false, false, false, false, false},
+				{false, false, true, true, false},
+				{false, false, true, true, false},
+				{false, false, false, false, false},
+			},
+			color:     "yellow",
+			pieceType: "O",
+			rotation:  0}
+	case 4:
+		return TetrisGeneralPiece{
+			shape: [5][5]bool{
+				{false, false, false, false, false},
+				{false, false, false, false, false},
+				{false, false, true, true, false},
+				{false, true, true, false, false},
+				{false, false, false, false, false},
+			},
+			color:     "green",
+			pieceType: "S",
+			rotation:  0}
+	case 5:
+		return TetrisGeneralPiece{
+			shape: [5][5]bool{
+				{false, false, false, false, false},
+				{false, false, false, false, false},
+				{false, true, true, false, false},
+				{false, false, true, true, false},
+				{false, false, false, false, false},
+			},
+			color:     "purple",
+			pieceType: "Z",
+			rotation:  0}
+	case 6:
+		return TetrisGeneralPiece{
+			shape: [5][5]bool{
+				{false, false, false, false, false},
+				{false, false, true, false, false},
+				{false, false, true, false, false},
+				{false, false, true, false, false},
+				{false, false, true, false, false},
+			},
+			color:     "cyan",
+			pieceType: "I",
+			rotation:  0}
+	default:
+		return TetrisGeneralPiece{}
+	}
+}
+
 func (t *TetrisGeneralPiece) SetColor(color string) {
 	t.color = color
 }
@@ -56,7 +147,7 @@ func (t *TetrisGeneralPiece) SetShape(shape [5][5]bool) {
 }
 
 func (t TetrisGeneralPiece) String() string {
-	return fmt.Sprintf("Color: %v \nPieceType: %v \nShape: %v", t.color, t.pieceType, t.shape)
+	return fmt.Sprintf("Color: %v \nPieceType: %v", t.color, t.pieceType)
 }
 
 func (t *TetrisGeneralPiece) Rotate() {
