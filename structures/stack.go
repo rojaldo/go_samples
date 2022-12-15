@@ -4,16 +4,20 @@ import (
 	"errors"
 )
 
-type StackNode struct {
-	Val  int
-	Next *StackNode
+type StackNode[T any] struct {
+	Val  T
+	Next *StackNode[T]
 }
 
-type Stack struct {
-	Top *StackNode
+type Stack[T any] struct {
+	Top *StackNode[T]
 }
 
-func (s *Stack) Push(node *StackNode) {
+func (s *Stack[T]) NewStack() *Stack[T] {
+	return &Stack[T]{}
+}
+
+func (s *Stack[T]) Push(node *StackNode[T]) {
 	if s.Top == nil {
 		s.Top = node
 		return
@@ -22,7 +26,7 @@ func (s *Stack) Push(node *StackNode) {
 	s.Top = node
 }
 
-func (s *Stack) Pop() (*StackNode, error) {
+func (s *Stack[T]) Pop() (*StackNode[T], error) {
 	if s.Top == nil {
 		return nil, errors.New("Stack is empty")
 	}
@@ -31,7 +35,7 @@ func (s *Stack) Pop() (*StackNode, error) {
 	return res, nil
 }
 
-func (s *Stack) PrintStack() {
+func (s *Stack[T]) PrintStack() {
 	myElem := s.Top
 	for myElem != nil {
 		println(myElem.Val)
