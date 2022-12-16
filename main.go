@@ -1,46 +1,51 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"sample/apod"
+import "github.com/gin-gonic/gin"
 
-	"github.com/urfave/cli"
-)
+type User struct {
+	Username string
+	Password string
+}
+
+var users = []User{{Username: "user1", Password: "pass1"}, {Username: "user2", Password: "pass2"}}
 
 func main() {
-	app := cli.NewApp()
-	app.Flags = []cli.Flag{
-		cli.StringFlag{
-			Name:  "date",
-			Value: "today",
-			Usage: "date to get data for (format: YYYY-MM-DD) (default: today)",
-		},
-		cli.StringFlag{
-			Name:  "trivia",
-			Value: "today",
-			Usage: "Answer a question about anything",
-		},
-	}
-	app.Action = func(c *cli.Context) error {
-		if apod.IsValidDate(c.String("apod")) {
-			fmt.Println("Valid date: ", c.String("apod"))
-			apod := apod.Apod{}
-			apod = apod.GetApod(c.String("date"))
-			fmt.Println(apod.Hdurl)
-		} else if c.String("trivia") != "" { // trivia parameter is a number
-			fmt.Println("Today's trivia")
-			// question
-			// a. answer
-			// b. answer
-			// c. answer
-			// d. answer
-			// fmt.Scanln(&answer)
-		} else {
-			fmt.Println("Invalid date: ", c.String("date"))
-		}
-		return nil
-	}
+	r := gin.Default()
+	r.Static("/assets", "./assets")
+	r.GET("/users", func(c *gin.Context) {
+		c.JSON(200, users)
+	})
 
-	app.Run(os.Args)
+	r.POST("/users", func(c *gin.Context) {
+		var user User
+		c.BindJSON(&user)
+		users = append(users, user)
+		c.JSON(200, user)
+	})
+
+	r.PUT("/users/:username", func(c *gin.Context) {
+		username := c.Param("username")
+		var user User
+		c.BindJSON(&user)
+		for i, u := range users {
+			if u.Username == username {
+				users[i] = user
+				break
+			}
+		}
+		c.JSON(200, user)
+	})
+
+	r.DELETE("/users/:username", func(c *gin.Context) {
+		username := c.Param("username")
+		for i, u := range users {
+			if u.Username == username {
+				users = append(users[:i], users[i+1:]...)
+				break
+			}
+		}
+		c.JSON(200, gin.H{"username " + username: "deleted"})
+	})
+
+	r.Run(":8080")
 }
