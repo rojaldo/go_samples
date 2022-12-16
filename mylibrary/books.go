@@ -12,7 +12,7 @@ type Book struct {
 	Author string
 }
 
-var Books = []Book{{Id: 1, Title: "Book1", Author: "Author1"}, {Id: 2, Title: "Book2", Author: "Author2"}}
+var Books = []Book{{Id: 1, Title: "The Lrd of the rings", Author: "Tolkien"}, {Id: 2, Title: "Good Omens", Author: "Pratt and Gaiman"}}
 
 func BookGet(g *gin.RouterGroup) {
 	g.GET("/books", func(c *gin.Context) {

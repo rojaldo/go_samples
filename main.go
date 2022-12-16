@@ -21,6 +21,20 @@ func main() {
 	mylibrary.BookPost(g)
 	mylibrary.BookPut(g)
 	mylibrary.BookDelete(g)
+	mylibrary.VolumeGet(g)
+	mylibrary.VolumePost(g)
+	mylibrary.VolumePut(g)
+	mylibrary.VolumeDelete(g)
+	mylibrary.TransactionGet(g)
+	mylibrary.TransactionPost(g)
+	mylibrary.TransactionDelete(g)
+
+	// angular app with multiple routes
+	r.Static("/app", "./app")
+	r.LoadHTMLGlob("app/*.html")
+	// allow access to all files in app folder
+
+	r.StaticFile("/app", "./*.*")
 
 	r.Run(":8080")
 }
