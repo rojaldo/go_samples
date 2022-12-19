@@ -33,6 +33,22 @@ func UserGet(g *gin.RouterGroup) {
 		c.JSON(200, Users)
 		m.Unlock()
 	})
+
+	g.GET("/users/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		// get int from string
+		idInt, error := strconv.Atoi(id)
+		if error != nil {
+			c.JSON(400, gin.H{"error": error})
+		}
+		m.Lock()
+		for _, user := range Users {
+			if user.Id == idInt {
+				c.JSON(200, user)
+			}
+		}
+		m.Unlock()
+	})
 }
 
 // @BasePath /api/v1
