@@ -2,6 +2,7 @@ package mylibrary
 
 import (
 	"strconv"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,8 @@ type User struct {
 }
 
 var Users = []User{{Id: 1, Username: "user1", Password: "pass1"}, {Id: 2, Username: "user2", Password: "pass2"}}
+
+var m sync.Mutex
 
 // @BasePath /api/v1
 // PingExample godoc
@@ -26,7 +29,9 @@ var Users = []User{{Id: 1, Username: "user1", Password: "pass1"}, {Id: 2, Userna
 // @Router /users [get]
 func UserGet(g *gin.RouterGroup) {
 	g.GET("/users", func(c *gin.Context) {
+		m.Lock()
 		c.JSON(200, Users)
+		m.Unlock()
 	})
 }
 
@@ -45,9 +50,11 @@ func UserPost(g *gin.RouterGroup) {
 		var user User
 		c.BindJSON(&user)
 		// add ID
+		m.Lock()
 		user.Id = Users[len(Users)-1].Id + 1
 		Users = append(Users, user)
 		c.JSON(200, user)
+		m.Lock()
 	})
 }
 
@@ -71,13 +78,16 @@ func UserPut(g *gin.RouterGroup) {
 		}
 		var user User
 		c.BindJSON(&user)
+		m.Lock()
 		for i, u := range Users {
 			if u.Id == idInt {
 				Users[i] = user
+
 				break
 			}
 		}
-
+		c.JSON(200, user)
+		m.Unlock()
 	})
 }
 
