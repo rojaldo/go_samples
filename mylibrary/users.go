@@ -13,6 +13,11 @@ type User struct {
 	Password string
 }
 
+// json data
+func (u User) MarshalJSON() ([]byte, error) {
+	return []byte(`{"id":` + strconv.Itoa(u.Id) + `,"username":"` + u.Username + `","password":"` + u.Password + `"}`), nil
+}
+
 var Users = []User{{Id: 1, Username: "user1", Password: "pass1"}, {Id: 2, Username: "user2", Password: "pass2"}}
 
 var m sync.Mutex
@@ -45,8 +50,11 @@ func UserGet(g *gin.RouterGroup) {
 		for _, user := range Users {
 			if user.Id == idInt {
 				c.JSON(200, user)
+				m.Unlock()
+				return
 			}
 		}
+		c.JSON(404, gin.H{"error": "user not found"})
 		m.Unlock()
 	})
 }
@@ -69,8 +77,8 @@ func UserPost(g *gin.RouterGroup) {
 		m.Lock()
 		user.Id = Users[len(Users)-1].Id + 1
 		Users = append(Users, user)
-		c.JSON(200, user)
-		m.Lock()
+		c.JSON(201, user)
+		m.Unlock()
 	})
 }
 
@@ -97,13 +105,16 @@ func UserPut(g *gin.RouterGroup) {
 		m.Lock()
 		for i, u := range Users {
 			if u.Id == idInt {
+				user.Id = idInt
 				Users[i] = user
-
-				break
+				c.JSON(200, user)
+				m.Unlock()
+				return
 			}
 		}
-		c.JSON(200, user)
 		m.Unlock()
+		c.JSON(404, gin.H{"error": "user not found"})
+
 	})
 }
 
@@ -127,6 +138,7 @@ func UserDelete(g *gin.RouterGroup) {
 		for i, u := range Users {
 			if u.Id == idInt {
 				Users = append(Users[:i], Users[i+1:]...)
+				c.JSON(200, gin.H{"message": "user deleted"})
 				break
 			}
 		}
