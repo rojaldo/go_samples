@@ -1152,15 +1152,100 @@ func main() {
 
 The above code creates a function that adds two numbers or two strings. The add function is generic and can be used with any type.
 
+=== RxGo
+
+RxGo is a reactive programming library for Go. Reactive programming is a programming paradigm that allows you to create asynchronous and event-based programs. 
+
+.To install RxGo, use the following command:
+[source,shell]
+----
+go get github.com/reactivex/rxgo/v2
+----
+
+Observables use the following concepts:
+* Observable: An observable is a stream of data.
+* Observer: An observer is a function that receives data from an observable.
+* Subscription: A subscription is a function that is called when an observable is completed or an error occurs.
+
+.RxGo is created using the following syntax:
+[source,go]
+----
+package main
+
+import (
+    "fmt"
+    "time"
+
+    "github.com/reactivex/rxgo/v2"
+)
+
+func main() {
+    ch := make(chan rxgo.Item)
+    go func() {
+        ch <- rxgo.Of(1, 2, 3, 4, 5)
+        close(ch)
+    }()
+    observable := rxgo.FromChannel(ch)
+    observable.
+        Map(func(i interface{}) interface{} {
+            return i.(int) * 2
+        }).
+        Filter(func(i interface{}) bool {
+            return i.(int) > 5
+        }).
+        Subscribe(context.Background(),
+            func(i interface{}) {
+                fmt.Println(i)
+            },
+            func(err error) {
+                fmt.Println(err)
+            },
+            func() {
+                fmt.Println("Completed")
+            })
+    time.Sleep(1 * time.Second)
+}
+----
+
+The above code creates an observable that emits numbers from 1 to 5. The observable is then mapped to double the numbers. The observable is then filtered to only emit numbers greater than 5. The observable is then subscribed to and the numbers are printed.
+
+.The main methods used in RxGo are:
+* Just: Creates an observable from a single value.
+* From: Creates an observable from an array.
+* Map: Maps the data emitted by an observable.
+* Filter: Filters the data emitted by an observable.
+* Range: Creates an observable that emits a range of numbers.
+* Repeat: Creates an observable that emits the same data multiple times.
+* Reduce: Reduces the data emitted by an observable.
+* Next: Emits data from an observable.
+* Subscribe: Subscribes to an observable.
+
+==== Subscribe
+
+.The subscribe method is used to subscribe to an observable. The subscribe method takes the following parameters:
+* context: The context is used to cancel the subscription.
+* onNext: The onNext function is called when the observable emits data.
+* onError: The onError function is called when the observable emits an error.
+* onComplete: The onComplete function is called when the observable is completed.
+
+[source,go]
+----
+observable.Subscribe(context.Background(),
+    func(i interface{}) {
+        fmt.Println(i)
+    },
+    func(err error) {
+        fmt.Println(err)
+    },
+    func() {
+        fmt.Println("Completed")
+    })
+----
 
 == Resources
 
-* https://golang.org/doc/effective_go.html
-* https://gobyexample.com/
-* https://tour.golang.org/welcome/1
-* https://golang.org/doc/
-* https://golang.org/doc/effective_go.html
-
-== Books
-
-
+* https://golang.org/doc/[Go Documentation]
+* https://golang.org/doc/effective_go.html[Effective Go]
+* https://gobyexample.com/[Go by Example]
+* https://tour.golang.org/welcome/1[Go Tour]
+* https://github.com/avelino/awesome-go[Awesome Go]
